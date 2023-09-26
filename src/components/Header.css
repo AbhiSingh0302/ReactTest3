@@ -1,6 +1,14 @@
 .main-header{
-    padding: 1rem 0;
+    padding: 1rem;
     background-color: black;
     text-align: center;
     color: aliceblue;
+}
+
+.heading{
+    display: inline-block;
+}
+
+.cart-button{
+    float: right;
 }
