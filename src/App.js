@@ -3,11 +3,13 @@ import Header from "./components/Header";
 import MedicalForm from "./components/MedicalForm";
 import MedicineList from "./components/MedicineList";
 import { CartContextProvider, cartContext } from "./store/CartContext";
+import Cart from "./components/Cart";
 
 function App() {
   const cartCtx = useContext(cartContext);
 
   const [items,setItems] = useState([]);
+  const [showCart, setShowCart] = useState(false);
   console.log("he");
   
   useEffect(() => {
@@ -18,6 +20,22 @@ function App() {
         setItems(pre => [...pre,...data]);
       }else{
         throw new Error('No Products');
+      }
+    })
+    .catch(err => {
+      alert(err.message);
+    })
+
+    fetch(`https://crudcrud.com/api/${cartCtx.endPoint}/cart`).then(res => res.json())
+    .then(data => {
+      console.log(data);
+      if(data.length > 0){
+        data.forEach(el => {
+          console.log("foreach", el);
+          cartCtx.addProduct(el)
+        });
+      }else{
+        throw new Error('No Cart');
       }
     })
     .catch(err => {
@@ -44,9 +62,18 @@ function App() {
     })
   }
 
+  const showCartFunc = () => {
+    setShowCart(true)
+  }
+
+  const closeCartFunc = () => {
+    setShowCart(false);
+  }
+
   return (
     <CartContextProvider>
-    <Header/>
+      {showCart && <Cart onClose={closeCartFunc}/>}
+    <Header onShowCart={showCartFunc}/>
     <MedicalForm onSubmit={submitHandler}/>
     <MedicineList list={items}/>
     </CartContextProvider>

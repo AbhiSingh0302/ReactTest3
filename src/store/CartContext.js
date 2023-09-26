@@ -13,12 +13,15 @@ const CartContextProvider = props => {
     const [products,setProducts] = useState([]);
 
     const addProduct = item => {
+        console.log("sdf",item);
         setProducts(prev => {
             const atIndex = prev.findIndex(prod => prod.name === item.name);
             if(atIndex === -1){
+                console.log(prev);
                 return [...prev,item]
             }
             prev[atIndex] = {...prev[atIndex], quantity: Number(prev[atIndex].quantity) + 1}
+            console.log(prev);
             return prev;
         })
     }
